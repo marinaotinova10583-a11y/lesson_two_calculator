@@ -25,7 +25,16 @@
     <span class="nav__brand">СемБюджет</span>
     <div class="nav__actions">
       <a class="nav__link" href="calculator.html">Калькулятор</a>
-      <button type="button" class="theme-btn" id="themeToggle" title="Переключить тему" aria-label="Переключить тему">🌙</button>
+      <button
+        type="button"
+        class="theme-btn"
+        id="themeToggle"
+        title="Переключить тему"
+        aria-label="Переключить светлую и тёмную тему"
+        aria-pressed="false">
+        <span class="theme-btn__icon" aria-hidden="true">🌙</span>
+        <span class="theme-btn__text">Тёмная</span>
+      </button>
     </div>
   </nav>
 
@@ -92,6 +101,50 @@
     <p>СемБюджет · работает офлайн · данные только у вас</p>
   </footer>
 
-  <script src="js/theme.js"></script>
+  <script>
+    (function () {
+      var THEME_KEY = "budgetTheme";
+      var root = document.documentElement;
+      var btn = document.getElementById("themeToggle");
+      if (!btn) return;
+
+      var icon = btn.querySelector(".theme-btn__icon");
+      var text = btn.querySelector(".theme-btn__text");
+
+      function applyTheme(theme) {
+        var isDark = theme === "dark";
+        if (isDark) {
+          root.setAttribute("data-theme", "dark");
+          if (icon) icon.textContent = "☀️";
+          if (text) text.textContent = "Светлая";
+          btn.title = "Включить светлую тему";
+          btn.setAttribute("aria-label", "Включить светлую тему");
+          btn.setAttribute("aria-pressed", "true");
+        } else {
+          root.removeAttribute("data-theme");
+          if (icon) icon.textContent = "🌙";
+          if (text) text.textContent = "Тёмная";
+          btn.title = "Включить тёмную тему";
+          btn.setAttribute("aria-label", "Включить тёмную тему");
+          btn.setAttribute("aria-pressed", "false");
+        }
+      }
+
+      var saved = "light";
+      try {
+        saved = localStorage.getItem(THEME_KEY) || "light";
+      } catch (e) {}
+
+      applyTheme(saved);
+
+      btn.addEventListener("click", function () {
+        var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        try {
+          localStorage.setItem(THEME_KEY, next);
+        } catch (e) {}
+        applyTheme(next);
+      });
+    })();
+  </script>
 </body>
 </html>
