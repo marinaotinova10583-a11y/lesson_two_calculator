@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Калькулятор семейного бюджета: доходы, расходы, итоги, диаграмма и экспорт.">
+  <title>Калькулятор — СемБюджет</title>
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem("budgetTheme") === "dark") {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/calculator.css">
+</head>
+<body>
+
+  <div class="app-top">
+    <a class="app-top__brand" href="index.html">← СемБюджет</a>
+    <div class="app-top__nav">
+      <button type="button" class="ghost btn--sm" data-action="save">Сохранить</button>
+      <button type="button" class="ghost btn--sm" data-action="export">Экспорт CSV</button>
+      <button type="button" class="ghost btn--sm" data-action="print">Печать / PDF</button>
+    </div>
+  </div>
+
+  <header class="page-header">
+    <h1>Калькулятор семейного бюджета</h1>
+    <p>Введите доходы и расходы — итоги и диаграмма обновятся автоматически. Данные сохраняются в браузере.</p>
+  </header>
+
+  <div class="container">
+
+    <!-- Доходы -->
+    <div class="card">
+      <h2>Доходы семьи</h2>
+
+      <div class="input-group">
+        <label for="salary1">Зарплата №1</label>
+        <input type="number" id="salary1" class="income" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="salary2">Зарплата №2</label>
+        <input type="number" id="salary2" class="income" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="bonus">Премии</label>
+        <input type="number" id="bonus" class="income" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="business">Доход от бизнеса</label>
+        <input type="number" id="business" class="income" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="rentIncome">Доход от аренды</label>
+        <input type="number" id="rentIncome" class="income" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="investments">Инвестиции</label>
+        <input type="number" id="investments" class="income" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="freelance">Фриланс</label>
+        <input type="number" id="freelance" class="income" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="pension">Пенсия</label>
+        <input type="number" id="pension" class="income" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="benefits">Пособия</label>
+        <input type="number" id="benefits" class="income" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="otherIncome">Прочие доходы</label>
+        <input type="number" id="otherIncome" class="income" min="0" step="100" placeholder="0" value="0">
+      </div>
+
+      <hr class="divider">
+
+      <div class="subtotal">
+        <h3>Итого доходов</h3>
+        <span class="value value--ok" id="incomeTotal">0 ₽</span>
+      </div>
+
+      <div class="btn-row">
+        <button type="button" class="green" id="fillIncome">Заполнить пример</button>
+        <button type="button" class="orange" id="clearIncome">Очистить доходы</button>
+      </div>
+    </div>
+
+    <!-- Расходы -->
+    <div class="card">
+      <h2>Расходы семьи</h2>
+
+      <h3 class="cat">Жильё</h3>
+      <div class="input-group">
+        <label for="mortgage">Ипотека / Аренда</label>
+        <input type="number" id="mortgage" class="expense" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="utilities">Коммунальные услуги</label>
+        <input type="number" id="utilities" class="expense" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="internet">Интернет</label>
+        <input type="number" id="internet" class="expense" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="mobile">Мобильная связь</label>
+        <input type="number" id="mobile" class="expense" min="0" step="100" placeholder="0" value="0">
+      </div>
+
+      <h3 class="cat">Продукты</h3>
+      <div class="input-group">
+        <label for="food">Продукты питания</label>
+        <input type="number" id="food" class="expense" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="cafe">Кафе и рестораны</label>
+        <input type="number" id="cafe" class="expense" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="delivery">Доставка еды</label>
+        <input type="number" id="delivery" class="expense" min="0" step="100" placeholder="0" value="0">
+      </div>
+
+      <h3 class="cat">Транспорт</h3>
+      <div class="input-group">
+        <label for="fuel">Бензин</label>
+        <input type="number" id="fuel" class="expense" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="service">Обслуживание автомобиля</label>
+        <input type="number" id="service" class="expense" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="taxi">Такси</label>
+        <input type="number" id="taxi" class="expense" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="transport">Общественный транспорт</label>
+        <input type="number" id="transport" class="expense" min="0" step="100" placeholder="0" value="0">
+      </div>
+
+      <h3 class="cat">Дети</h3>
+      <div class="input-group">
+        <label for="kindergarten">Детский сад</label>
+        <input type="number" id="kindergarten" class="expense" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="school">Школа</label>
+        <input type="number" id="school" class="expense" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="clubs">Кружки и секции</label>
+        <input type="number" id="clubs" class="expense" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="kidsClothes">Одежда детям</label>
+        <input type="number" id="kidsClothes" class="expense" min="0" step="100" placeholder="0" value="0">
+      </div>
+
+      <h3 class="cat">Здоровье</h3>
+      <div class="input-group">
+        <label for="medicine">Лекарства</label>
+        <input type="number" id="medicine" class="expense" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="doctor">Врачи</label>
+        <input type="number" id="doctor" class="expense" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="insurance">Страхование</label>
+        <input type="number" id="insurance" class="expense" min="0" step="100" placeholder="0" value="0">
+      </div>
+
+      <h3 class="cat">Кредиты</h3>
+      <div class="input-group">
+        <label for="credit">Потребительский кредит</label>
+        <input type="number" id="credit" class="expense" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="creditCard">Кредитная карта</label>
+        <input type="number" id="creditCard" class="expense" min="0" step="100" placeholder="0" value="0">
+      </div>
+
+      <h3 class="cat">Прочие расходы</h3>
+      <div class="input-group">
+        <label for="clothes">Одежда</label>
+        <input type="number" id="clothes" class="expense" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="fun">Развлечения</label>
+        <input type="number" id="fun" class="expense" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="travel">Путешествия</label>
+        <input type="number" id="travel" class="expense" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="subscriptions">Подписки</label>
+        <input type="number" id="subscriptions" class="expense" min="0" step="100" placeholder="0" value="0">
+      </div>
+      <div class="input-group">
+        <label for="unexpected">Непредвиденные расходы</label>
+        <input type="number" id="unexpected" class="expense" min="0" step="100" placeholder="0" value="0">
+      </div>
+
+      <hr class="divider">
+
+      <div class="subtotal">
+        <h3>Итого расходов</h3>
+        <span class="value value--bad" id="expenseTotal">0 ₽</span>
+      </div>
+
+      <div class="btn-row">
+        <button type="button" class="green" id="fillExpenses">Заполнить пример</button>
+        <button type="button" class="red" id="clearExpenses">Очистить расходы</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="summary">
+    <div class="summary-card">
+      <h3>Доходы</h3>
+      <span class="amount" id="incomeSummary">0 ₽</span>
+    </div>
+    <div class="summary-card">
+      <h3>Расходы</h3>
+      <span class="amount" id="expenseSummary">0 ₽</span>
+    </div>
+    <div class="summary-card">
+      <h3>Остаток</h3>
+      <span class="amount" id="balanceTotal">0 ₽</span>
+    </div>
+    <div class="summary-card">
+      <h3>Доля сбережений</h3>
+      <span class="amount" id="savingsRate">0 %</span>
+    </div>
+  </div>
+
+  <section class="chart-wrap" aria-labelledby="chartTitle">
+    <h2 id="chartTitle">Структура расходов</h2>
+    <p>Доли по группам категорий. Обновляется при изменении сумм.</p>
+    <div class="chart-layout">
+      <canvas id="expenseChart" width="280" height="280" aria-label="Круговая диаграмма расходов"></canvas>
+      <ul class="legend" id="chartLegend"></ul>
+    </div>
+  </section>
+
+  <div class="toolbar">
+    <p class="toolbar__hint">Сохранение в браузере · CSV для Excel · печать как PDF через диалог браузера</p>
+    <button type="button" class="primary" data-action="save">Сохранить</button>
+    <button type="button" class="green" data-action="export">Экспорт CSV</button>
+    <button type="button" class="ghost" data-action="print">Печать / PDF</button>
+    <button type="button" class="red" data-action="reset">Сбросить всё</button>
+  </div>
+
+  <div class="save-toast" id="saveToast" role="status" aria-live="polite"></div>
+
+  <button type="button" id="themeToggle" title="Переключить тему" aria-label="Переключить светлую и тёмную тему">🌙</button>
+
+  <script src="js/theme.js"></script>
+  <script src="js/calculator.js"></script>
+</body>
+</html>

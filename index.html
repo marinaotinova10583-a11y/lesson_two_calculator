@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="СемБюджет — простой калькулятор семейного бюджета. Считайте доходы и расходы офлайн, без регистрации.">
+  <title>СемБюджет — семейный бюджет без лишнего</title>
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem("budgetTheme") === "dark") {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/landing.css">
+</head>
+<body>
+
+  <nav class="nav" aria-label="Главная навигация">
+    <span class="nav__brand">СемБюджет</span>
+    <div class="nav__actions">
+      <a class="nav__link" href="calculator.html">Калькулятор</a>
+      <button type="button" class="theme-btn" id="themeToggle" title="Переключить тему" aria-label="Переключить тему">🌙</button>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero__backdrop" aria-hidden="true">
+      <div class="hero__mesh"></div>
+      <div class="hero__orb hero__orb--a"></div>
+      <div class="hero__orb hero__orb--b"></div>
+    </div>
+
+    <div class="hero__content">
+      <p class="hero__brand">СемБюджет</p>
+      <h1 class="hero__title">Деньги семьи — на одном экране</h1>
+      <p class="hero__lead">
+        Считайте доходы и расходы, смотрите остаток и структуру трат.
+        Без аккаунтов, серверов и рекламы.
+      </p>
+      <div class="hero__cta">
+        <a class="btn btn--primary" href="calculator.html">Открыть калькулятор</a>
+        <a class="btn btn--ghost" href="#features">Что умеет</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="features" id="features">
+    <div class="features__head">
+      <h2>Только то, что нужно семье</h2>
+      <p>Один файл в браузере — и бюджет уже под контролем.</p>
+    </div>
+    <ol class="features__list">
+      <li class="features__item">
+        <span class="features__num">01</span>
+        <div>
+          <h3>Доходы и расходы по категориям</h3>
+          <p>Зарплаты, пособия, жильё, еда, дети, кредиты — всё в привычных блоках.</p>
+        </div>
+      </li>
+      <li class="features__item">
+        <span class="features__num">02</span>
+        <div>
+          <h3>Итоги и диаграмма</h3>
+          <p>Остаток и доля сбережений считаются сами. Структура расходов — на графике.</p>
+        </div>
+      </li>
+      <li class="features__item">
+        <span class="features__num">03</span>
+        <div>
+          <h3>Сохранение и экспорт</h3>
+          <p>Данные остаются в браузере. Можно выгрузить CSV или распечатать PDF.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="outro">
+    <div class="outro__panel">
+      <h2>Начните считать бюджет за минуту</h2>
+      <p>Заполните пример или введите свои цифры — остаток появится сразу.</p>
+      <a class="btn btn--primary" href="calculator.html">Перейти к калькулятору</a>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <p>СемБюджет · работает офлайн · данные только у вас</p>
+  </footer>
+
+  <script src="js/theme.js"></script>
+</body>
+</html>
